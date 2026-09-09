@@ -104,3 +104,8 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Left over from opening the repository root in Unity by mistake.
+# The shared Unity project is AdventureGameSGD168/.
+/Packages/
+/ProjectSettings/
