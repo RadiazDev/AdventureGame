@@ -24,6 +24,7 @@ public class EvidencePickup : MonoBehaviour
         // This stops this clue from being collected again.
         if (collected)
             return;
+            
 
             if (inventory == null)
 {
