@@ -10,6 +10,7 @@ using UnityEngine;
 public class EvidenceInventory : MonoBehaviour
 {
     [SerializeField] private TMP_Text evidenceListText;
+    [SerializeField] private TMP_Text objectiveText;
 
     private List<string> collectedEvidence = new List<string>();
 
@@ -38,13 +39,45 @@ public class EvidenceInventory : MonoBehaviour
     }
 
     //This method updates the display of the collected evidence in the UI.
-    private void UpdateDisplay()
+private void UpdateDisplay()
+{
+    if (evidenceListText == null)
     {
-        if (evidenceListText == null)
-            return;
-
-        evidenceListText.text = collectedEvidence.Count == 0
-            ? "No evidence collected"
-            : string.Join("\n", collectedEvidence);
+        return;
     }
+
+    // Show the evidence collected so far.
+    if (collectedEvidence.Count == 0)
+    {
+        evidenceListText.text = "No evidence collected";
+    }
+    else
+    {
+        evidenceListText.text = "";
+
+        foreach (string evidence in collectedEvidence)
+        {
+            evidenceListText.text += evidence + "\n";
+        }
+    }
+
+    if (objectiveText == null)
+    {
+        return;
+    }
+
+    // Choose the objective message.
+    if (collectedEvidence.Count == 0)
+    {
+        objectiveText.text = "Find evidence in the alley.";
+    }
+    else if (collectedEvidence.Count == 1)
+    {
+        objectiveText.text = "Find the remaining clue.";
+    }
+    else
+    {
+        objectiveText.text = "Both clues collected!";
+    }
+}
 }

@@ -16,6 +16,8 @@ public class EvidencePickup : MonoBehaviour
 
     [SerializeField] private EvidenceInventory inventory;
     [SerializeField] private string evidenceName = "Fish wrapping";
+    [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private string evidenceDescription;
 
     private bool collected;
 
@@ -37,6 +39,10 @@ if (!inventory.AddEvidence(evidenceName))
     return;
 
         collected = true;
+        if (descriptionText != null)
+{
+    descriptionText.text = evidenceDescription;
+}
 
         if (clueText != null)
             clueText.text = "Evidence\ncollected";
