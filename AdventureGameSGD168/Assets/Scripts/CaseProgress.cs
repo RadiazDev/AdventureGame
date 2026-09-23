@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // These values stay with the player when a different scene loads.
+//static class to track the player's progress in the case.
 public static class CaseProgress
 {
+    //Enum is a list of all the stages in the case. Use this to track the player's progress.
     public enum Stage
     {
         FindMurder, FindShiner, TalkDockworker, FindCrate, SellFish,
@@ -38,7 +40,9 @@ public static class CaseProgress
         items.Remove(itemName);
         if (SelectedItem == itemName) SelectedItem = "";
     }
-
+    //Returns the current objective based on the player's progress in the case.
+    //(case stage.) This method returns a string describing the player's current objective based on the stage they are in.
+    // So when the player is at a certain stage, this method will provide the corresponding objective.
     public static string Objective()
     {
         switch (CurrentStage)
@@ -54,6 +58,7 @@ public static class CaseProgress
             case Stage.CollectEvidence: return "Collect the evidence revealed by the flashlight.";
             case Stage.ReportChief: return "Select the final evidence and present it to the chief.";
             default: return "Case closed. Purr-petrator caught!";
+            //Dont reorder the entries in the switch statement. Each case corresponds to a specific stage in the case.
         }
     }
 }
