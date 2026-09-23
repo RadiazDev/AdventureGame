@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//added this
+
 // The item buttons select what the player will use on their next target.
 public class AdventureInventory : MonoBehaviour
 {
