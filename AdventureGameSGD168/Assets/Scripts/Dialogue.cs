@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class Dialogue : MonoBehaviour
 {
@@ -39,12 +40,25 @@ public class Dialogue : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    private void Update()
+   private void Update()
+{
+    // Don't skip dialogue with the same tap that opened it.
+    if (Time.frameCount == openedFrame)
     {
-        // The click that opens the box must not also skip its first line.
-        if (Time.frameCount != openedFrame && Input.GetMouseButtonDown(0)) Advance();
+        return;
     }
 
+    bool clicked = Mouse.current != null &&
+                   Mouse.current.leftButton.wasReleasedThisFrame;
+
+    bool tapped = Touchscreen.current != null &&
+                  Touchscreen.current.primaryTouch.press.wasReleasedThisFrame;
+
+    if (clicked || tapped)
+    {
+        Advance();
+    }
+}
     public void Advance()
     {
         if (!gameObject.activeInHierarchy) return;
