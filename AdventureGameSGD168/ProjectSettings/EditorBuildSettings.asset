@@ -9,8 +9,32 @@ EditorBuildSettings:
     path: Assets/Scenes/Office (Start).unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/Streets.unity
+    path: Assets/Scenes/Streets_One.unity
     guid: b6a260bf32f6b2c4bb830ec34462c512
+  - enabled: 1
+    path: Assets/Scenes/Alley_Dumpster.unity
+    guid: 0bf0b94a8571e4d46908a74205ad929d
+  - enabled: 1
+    path: Assets/Scenes/Alley_Murder.unity
+    guid: ad123a76c5f9a5b4dbe939fcf01130b0
+  - enabled: 1
+    path: Assets/Scenes/Cheifs_Office.unity
+    guid: ae06c3a0f728eff4db2701f074e2e7dd
+  - enabled: 1
+    path: Assets/Scenes/Dock.unity
+    guid: c8c1ba8f56f70e14fb91f77130e92d10
+  - enabled: 1
+    path: Assets/Scenes/Fish_Market.unity
+    guid: 87d801658509c8943a43ab20d29179b2
+  - enabled: 1
+    path: Assets/Scenes/Streets_Two.unity
+    guid: ad7feceb22e0ca04cbda1945d4f31095
+  - enabled: 1
+    path: Assets/Scenes/Streets_Three.unity
+    guid: 1990e156e337dd340a198a15f47e23ee
+  - enabled: 1
+    path: Assets/Scenes/Dark_Passage.unity
+    guid: d9c24914c33f4c24d9979288d9cb7ece
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

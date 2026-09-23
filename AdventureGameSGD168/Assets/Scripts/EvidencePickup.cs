@@ -21,6 +21,22 @@ public class EvidencePickup : MonoBehaviour
 
     private void OnEnable()
     {
+        // Restore this clue when the player returns to its scene.
+        if (inventory != null)
+        {
+            collected = inventory.HasEvidence(evidenceName);
+        }
+
+        if (collected)
+        {
+            GetComponent<Button>().interactable = false;
+
+            if (clueText != null)
+            {
+                clueText.text = "Evidence\ncollected";
+            }
+        }
+
         if (inventoryButton != null)
         {
             inventoryButton.interactable = collected;
