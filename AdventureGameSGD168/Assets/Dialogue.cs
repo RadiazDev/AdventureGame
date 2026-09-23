@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem;
 using System.Collections;
 
 public class Dialogue : MonoBehaviour
@@ -8,63 +7,67 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI textComponent;
     public string[] lines;
     public float textSpeed;
-
     private int index;
-
+    private int openedFrame;
     [SerializeField] GameObject buttonBlocker;
 
-
-    void Start()
+    // Restart whenever the box opens, including repeat conversations.
+    private void OnEnable()
     {
-        textComponent.text = string.Empty;
-        StartDialogue();
-    }
-
-    void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
+        if (textComponent == null || lines == null || lines.Length == 0)
         {
-            if (textComponent.text == lines[index])
-            {
-                NextLine();
-            }
-            else
-            {
-                StopAllCoroutines();
-                textComponent.text = lines[index];
-            }
+            gameObject.SetActive(false);
+            return;
         }
-    }
-
-    void StartDialogue()
-    {
+        openedFrame = Time.frameCount;
         index = 0;
+        textComponent.text = "";
+        if (buttonBlocker != null) buttonBlocker.SetActive(true);
         StartCoroutine(TypeLine());
     }
 
-    IEnumerator TypeLine()
+    private void OnDisable()
     {
-        foreach(char c in lines[index].ToCharArray())
-        {
-            textComponent.text += c;
-            yield return new WaitForSeconds(textSpeed);
-        }
+        StopAllCoroutines();
+        if (buttonBlocker != null) buttonBlocker.SetActive(false);
     }
 
-    void NextLine()
+    public void Show(string[] newLines)
     {
-        if (index < lines.Length - 1)
+        gameObject.SetActive(false);
+        lines = newLines;
+        gameObject.SetActive(true);
+    }
+
+    private void Update()
+    {
+        // The click that opens the box must not also skip its first line.
+        if (Time.frameCount != openedFrame && Input.GetMouseButtonDown(0)) Advance();
+    }
+
+    public void Advance()
+    {
+        if (!gameObject.activeInHierarchy) return;
+        if (textComponent.text != lines[index])
+        {
+            StopAllCoroutines();
+            textComponent.text = lines[index];
+        }
+        else if (index < lines.Length - 1)
         {
             index++;
-            textComponent.text = string.Empty;
+            textComponent.text = "";
             StartCoroutine(TypeLine());
         }
-        else
+        else gameObject.SetActive(false);
+    }
+
+    private IEnumerator TypeLine()
+    {
+        foreach (char letter in lines[index])
         {
-            gameObject.SetActive(false);
-            index = 0;
-            textComponent.text = lines[index];
-            buttonBlocker.SetActive(false);
+            textComponent.text += letter;
+            yield return new WaitForSeconds(textSpeed);
         }
     }
 }
