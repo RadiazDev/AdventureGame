@@ -18,7 +18,7 @@ public static class CaseProgress
     private static List<string> items = new List<string>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetCase()
+    public static void ResetCase()
     {
         CurrentStage = Stage.FindMurder;
         SelectedItem = "";
