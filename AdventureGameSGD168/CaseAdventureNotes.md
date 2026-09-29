@@ -1,8 +1,10 @@
 # Cat detective: playable case prototype
 
-Updated September 23, 2026. Open **Office (Start)** and press Play for a fresh game. Characters and objects use labeled red buttons for now. No new artwork was generated.
+Updated September 28, 2026. Open **Start_Screen**, press Play, then choose **Start Game** for a fresh case in Office (Start). Characters and objects use labeled red buttons for now. No new artwork was generated.
 
 ## How to play
+
+**Help** is available on the title screen and in the on-screen **Pause** menu. Help's **Back** button returns to whichever menu opened it. **Continue** resumes the current case; **Quit** returns to the title screen. Choosing **Start Game** there begins a new case and clears the old progress. See [MenuNotes.md](MenuNotes.md).
 
 Click/tap a character to talk. Tap to finish a typing line, then tap again to close it. The existing dialogue boxes are reused.
 
@@ -28,6 +30,7 @@ You can enter Dark Passage before getting the flashlight, but its evidence remai
 - **CaseInteraction.cs**: a role chosen in the Inspector tells a character/object what to do. Each role has a short method using ordinary conditions to check progress and the selected item. Conversation text is in these methods.
 - **EvidenceInventory / EvidencePickup / EvidenceReview**: retain the existing clue collection and review behavior. The shared prefab uses the new case objectives; AlexTestScene retains its old two-clue objective.
 - **Dialogue.cs**: restarts typing whenever a conversation opens, including repeat conversations. Its blocker stops clicks reaching the scene behind the dialogue.
+- **GameMenu.cs**: controls Start Game, Pause, Continue, Quit, Help, and Back. Dialogue typing and taps are blocked while the case is paused.
 
 Edit **Assets/Prefabs/Evidence_UI.prefab** for shared inventory layout. Keep **Evidence_Panel** inactive in Edit mode. The old question-mark buttons remain inactive in the scene templates; the named red buttons are the connected prototype interactions.
 
@@ -36,6 +39,10 @@ Edit **Assets/Prefabs/Evidence_UI.prefab** for shared inventory layout. Keep **E
 The killer and the exact final evidence are deliberately unnamed. The hidden-object button and its text are placeholders until the group agrees how the object identifies the murderer. This is a working puzzle sequence, not the final mystery script. Character art, item icons, sound, and final dialogue can be added later. There is no save-to-disk system: restarting Play or closing the game clears progress.
 
 ## Validation
+
+September 28 menu addition: Unity Play mode checks passed 184 checks with zero errors, covering both Help return paths, pause/continue in all ten game scenes, blocked background clicks, conversation and inventory preservation, Quit, and a fresh Start Game reset. Help was also inspected in landscape and portrait Game view previews. These checks do not replace testing this change on an Android tablet.
+
+Earlier case prototype checks:
 
 Unity 6000.3.17f1 compiled the scripts. A temporary Play mode check passed 206 assertions with zero errors across the whole case chain, including actual UI raycast reachability and button-event calls, repeated conversations/rewards, wrong-item handling, item persistence between scenes, flashlight selection, and the chief's ending requirements. The check loaded some scenes directly; it was not a phone playthrough.
 

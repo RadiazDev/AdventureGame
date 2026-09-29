@@ -40,10 +40,10 @@ public class Dialogue : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-   private void Update()
+   private void LateUpdate()
 {
-    // Don't skip dialogue with the same tap that opened it.
-    if (Time.frameCount == openedFrame)
+    // Let UI buttons run first, then ignore menu taps and the tap that opened dialogue.
+    if (GameMenu.BlocksDialogueInput || Time.frameCount == openedFrame)
     {
         return;
     }
@@ -61,7 +61,7 @@ public class Dialogue : MonoBehaviour
 }
     public void Advance()
     {
-        if (!gameObject.activeInHierarchy) return;
+        if (!gameObject.activeInHierarchy || GameMenu.BlocksDialogueInput) return;
         if (textComponent.text != lines[index])
         {
             StopAllCoroutines();

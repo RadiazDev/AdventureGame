@@ -19,7 +19,7 @@ public class EvidenceInventory : MonoBehaviour
 
     // Start empty each time the game starts, including a new Unity Play session.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetEvidence()
+    public static void ResetEvidence()
     {
         collectedEvidence.Clear();
     }

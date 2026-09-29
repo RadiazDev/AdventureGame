@@ -1,10 +1,10 @@
 # Cat Detective: beginner's guide to every script
 
-Updated September 23, 2026. This guide describes the current prototype. Story details and features can change as the group develops the game.
+Updated September 28, 2026. This guide describes the current prototype. Story details and features can change as the group develops the game.
 
 ## Start here
 
-The game has eight scripts. Each has a different job:
+The game has nine scripts. Each has a different job:
 
 | Script | Its job |
 | --- | --- |
@@ -16,14 +16,15 @@ The game has eight scripts. Each has a different job:
 | [EvidenceInventory](#6-evidenceinventorycs) | Remember which clues the player has collected. |
 | [EvidencePickup](#7-evidencepickupcs) | Collect an alley clue and prevent collecting it again. |
 | [EvidenceReview](#8-evidencereviewcs) | Let the player reread a collected clue's description. |
+| [GameMenu](#9-gamemenucs) | Run the start screen, pause menu, and Help screen. |
 
 **Items** are things the player uses, such as Fish, Money, and Flashlight. **Case notes** record discoveries, such as the fish wrapping or the shiner's statement. The final discovery adds both a usable **Final evidence** item and a **Hidden evidence** case note.
 
-Progress survives moving between scenes. Starting a fresh Play session or restarting the game clears it. There is no save-to-disk system yet.
+Progress survives moving between scenes and using Pause/Continue. Starting a fresh Play session, restarting the game, or choosing **Start Game** clears it. There is no save-to-disk system yet. Open **Start_Screen** to begin at the title menu.
 
 ## 1. ButtonController.cs
 
-[Open the script](Assets/ButtonController.cs)
+[Open the script](Assets/Scripts/ButtonController.cs)
 
 **Purpose:** handle navigation arrows and the original numbered question-mark buttons.
 
@@ -47,7 +48,7 @@ The named character buttons now use `CaseInteraction`. The old question-mark sys
 
 ## 2. Dialogue.cs
 
-[Open the script](Assets/Dialogue.cs)
+[Open the script](Assets/Scripts/Dialogue.cs)
 
 **Purpose:** display conversation text one letter at a time, then let the player finish or advance the conversation.
 
@@ -68,7 +69,7 @@ For the current story characters, `CaseInteraction` supplies the words through `
 
 - `OnEnable()` starts at the first line whenever the box opens. It clears the text, enables the blocker, and starts typing. If the text reference or lines are missing, it closes the box.
 - `Show(string[] newLines)` replaces the conversation and reopens the box so typing starts fresh.
-- `Update()` checks each frame for a left mouse click. It ignores the frame when the box first opened, so the opening click does not also skip the text.
+- `LateUpdate()` checks for a released mouse click or finger tap after the UI buttons have run. It ignores taps while paused, taps used on menu buttons, and the frame when the dialogue first opened. This stops Continue from accidentally skipping dialogue.
 - `Advance()` finishes a partially typed line. If the line is already complete, it moves to the next line, or closes the box after the last one.
 - `TypeLine()` adds one letter, waits, and repeats. This is a **coroutine**: it can pause between letters while the rest of the game continues.
 - `OnDisable()` stops typing and turns off the blocker when the box closes.
@@ -99,7 +100,7 @@ Several story checks compare stages by their order. Reordering these entries can
 
 ### Functions
 
-- `ResetCase()` clears the items and selection and returns to the first stage when a new game session starts. Unity calls it automatically.
+- `ResetCase()` clears the items and selection and returns to the first stage. Unity calls it automatically at the start of a session; `GameMenu` also calls it when the player chooses Start Game.
 - `HasItem(string itemName)` answers true or false: does the player own this item?
 - `AddItem(string itemName)` adds an item if it is not already owned.
 - `RemoveItem(string itemName)` removes an item. It also clears the selection if that item was selected.
@@ -216,7 +217,7 @@ The private static `collectedEvidence` list is shared across scenes during a gam
 
 ### Functions
 
-- `ResetEvidence()` clears collected clues at the beginning of a fresh session.
+- `ResetEvidence()` clears collected clues at the beginning of a fresh session and when `GameMenu` starts a new case.
 - `Start()` updates the display when the component starts.
 - `HasEvidence(string evidenceName)` answers whether a named clue has been collected.
 - `AddEvidence(string evidenceName)` adds the name if needed and updates the display. It returns false if Evidence List Text is missing; otherwise it returns true, including when the clue was already recorded. Duplicate names are not added twice.
@@ -282,6 +283,44 @@ The red pickup button's On Click event calls `CollectEvidence()`. Collecting a c
 This script connects its own click action. You do not need an additional Inspector On Click entry for `ShowDescription()` on these review buttons.
 
 **Change here when:** changing review-button behavior. Edit a button's Evidence Description in the prefab to change its wording. For alley clues, keep that description consistent with the matching `EvidencePickup` description.
+
+## 9. GameMenu.cs
+
+[Open the script](Assets/Scripts/GameMenu.cs)
+
+**Purpose:** open the pause and Help panels, resume the case, and move between the title screen and gameplay.
+
+**Where it goes:** the shared [Game_Menu prefab](Assets/Prefabs/Game_Menu.prefab). One instance is already in **Start_Screen** and each of the ten gameplay scenes. The older AlexTestScene is unchanged.
+
+### Inspector fields
+
+| Field | What it means |
+| --- | --- |
+| Is Start Screen | Enabled only on the Start_Screen instance. Shows the title menu instead of the Pause button. |
+| Start Panel | The title, Start Game button, and Help button. |
+| Pause Button | The on-screen button below Inventory. |
+| Pause Panel | Contains Continue, Help, and Quit. |
+| Help Panel | Contains the controls, objective, and Back button. |
+| Start Scene Name | `Start_Screen`, loaded by Quit. |
+| Game Scene Name | `Office (Start)`, loaded by Start Game. |
+
+These fields and button events are already connected. Edit the shared prefab to change the layout or Help wording for every scene at once.
+
+### Functions
+
+- `Awake()` shows the right starting controls and hides the other panels.
+- `PauseGame()` remembers the current game speed, sets `Time.timeScale` to zero, and opens Pause. The full-screen panel blocks clicks on gameplay behind it.
+- `ContinueGame()` closes the menu and restores the previous speed. It preserves the current scene, inventory, selected item, and open conversation.
+- `ShowHelp()` remembers whether Help was opened from Pause, then displays the instructions. A paused case stays paused.
+- `BackFromHelp()` returns to Pause or the title panel, depending on where Help was opened.
+- `QuitToStart()` restores the game speed and loads Start_Screen.
+- `StartGame()` clears the case and collected clues, then loads Office (Start). This starts a new case rather than resuming the old one.
+- `OnDisable()` restores the game speed if the menu is removed while paused, preventing a scene change from leaving the game frozen.
+- `BlocksDialogueInput` tells Dialogue to ignore input while paused and on the frame a menu button was clicked. `ResetMenuInput()` clears that remembered frame when a Play session starts.
+
+The `helpCameFromPause` true/false variable is how Back knows where to go. Help is a panel in the same scene, so reading it does not unload the player's current location.
+
+**Change here when:** changing menu behavior. To edit instructions, open **Game_Menu > Help_Panel** in Prefab Mode and change its TextMeshPro text. See [MenuNotes.md](MenuNotes.md) for setup and a quick check.
 
 ## Names that must match
 
