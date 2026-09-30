@@ -1,77 +1,43 @@
-# Cat Detective: adding your sounds
+# Cat Detective: audio setup
 
-Updated September 30, 2026.
+Updated September 30, 2026. The downloaded clips are connected; no additional clip assignments are needed for the existing scenes.
 
-The code and Audio Sources are connected. You only need to import your clips, assign them, and save. Empty clip slots stay silent without stopping the game.
-
-## 1. Import the downloads
-
-1. Stop Play mode in Unity before changing anything.
-2. Drag your downloaded audio files into **Assets > SOUNDS** in the Project panel.
-3. Wait for Unity to import them.
-
-You can reuse one pickup clip for all three physical clues. The fish-wrapping clue already has your **PageTurn** clip assigned; that assignment was preserved.
-
-## 2. Background track and all navigation arrows
-
-1. In the Project panel, open **Assets > Resources**.
-2. Double-click **Game_Audio** to open the prefab.
-3. In its Hierarchy, select **Background_Audio**.
-4. In the Inspector, find its **Audio Source** component and drag your background clip into **Audio Generator** (the top audio slot currently showing None in your Unity Inspector).
-5. Select **Arrow_Audio** and put your arrow-click clip in that object's Audio Source field.
-6. Save the prefab with **Ctrl+S**, then use the back arrow to leave Prefab Mode.
-
-The background source already loops at volume **0.25**. The arrow source starts at **0.75** and does not loop. Adjust those volumes after listening to your clips. Keep **Play On Awake off** on both: the code starts the background and plays arrows when needed.
-
-**Assign the arrow clip once.** All existing navigation arrows call the shared source, which survives scene changes so the click can finish. The background also continues across scenes, Pause, Help, and returning to the start screen.
-
-You do not need to add this prefab to any scene. `GameAudio` automatically creates one copy when Play starts, even when starting directly in a gameplay scene. Keep its name **Game_Audio** and its location inside **Assets/Resources**.
-
-## 3. Clue pickups and the flashlight
-
-Open each scene from **Assets > Scenes**, select the named object in the **Hierarchy**, and assign your clip in that object's **Audio Source > Audio Generator** field.
-
-| Scene | Object | Clip to assign |
+| Sound | Clip | When it plays |
 | --- | --- | --- |
-| Alley_Murder | Fish_Wrapping_Clue | Pickup sound; PageTurn is already assigned. |
-| Alley_Murder | Delivery_Receipt_Clue | Pickup sound. |
-| Dark_Passage | Search_Darkness | Flashlight switch or reveal sound. |
-| Dark_Passage | Hidden_Evidence | Pickup sound for the final clue. |
+| Background | BackGround_Sound | Starts on the title screen, loops across scenes and Pause/Help, and stops when the chief closes the case. |
+| Navigation | Arrow_FootSteps | Clicking or tapping a navigation arrow. The sound can finish after the destination loads. |
+| UI buttons | Button_Click | Start, Pause, Continue, Help, Back, Quit, inventory controls, and available clue-review buttons. |
+| Cats | Cat_Call_1 through Cat_Call_6 | A random call when interacting with the shiner, dockworker, fish seller, chief, or the street cats on Streets 1 and 2. The murdered cat does not meow. |
+| Flashlight | FlashLight_Click | Successfully using the selected flashlight on the dark area in Dark_Passage. Selecting it in the inventory only makes the normal UI click. |
+| Physical clues | PageTurn | First pickup of fish wrapping, delivery receipt, or hidden evidence. Reviewing clues does not replay their pickup sound. |
+| Win | Game_Win | Plays once when complete evidence is presented to the chief and Case_Closed_Panel opens. |
 
-Expand the Hierarchy or search it by the object's name. Hidden_Evidence starts inactive, but you can still select it and edit its Audio Source. Save each scene with **Ctrl+S** after assigning the clips.
+The win display is the existing **Case_Closed_Panel in Cheifs_Office**, not Dark_Passage. Using the flashlight and finding the final clue do not end the game. At the win display, background and cat audio stop. The background stays off after the win clip finishes. Choosing Quit to return to the title restarts it; Start Game begins a fresh case.
 
-The **Success Sound** references on the two Dark_Passage objects are already connected to their Audio Sources. Put your downloaded clip in the **Audio Source** component; you do not need to change those script references.
+## Adjusting sounds and volume
 
-New effect sources are set to **2D**, **Loop off**, **Play On Awake off**, and volume **0.8**. The existing fish-wrapping source keeps its original volume. Leave autoplay and looping off for these short effects.
+Stop Play mode before making changes. In the Project panel, double-click **Assets > Resources > Game_Audio**. Select one of its children and edit its **Audio Source**:
 
-The older **AlexTestScene** also has Audio Sources on its two clue buttons. Assign clips there separately if you still use that test scene.
+- **Background_Audio:** background clip; loops; volume 0.25.
+- **Arrow_Audio:** footsteps; no loop; volume 0.75.
+- **Button_Audio:** UI click; no loop; volume 0.75.
+- **Cat_Audio:** shared cat voice; no loop; volume 0.65. Its clip is chosen during play from the root GameAudio component's **Cat Calls** list.
+- **Win_Audio:** win clip; no loop; volume 0.7.
 
-## What triggers each sound
+The clip slot is labeled **Audio Generator** in this project's Unity Inspector. Keep **Play On Awake off**; the scripts control when each clip starts. All sources are 2D. The long background clip uses **Streaming** in its import settings to avoid decompressing the whole track into memory.
 
-- Background: starts automatically when the game starts, then loops continuously.
-- Navigation arrow: plays when the player clicks or taps an arrow, before the destination loads.
-- Alley clue: plays after the clue is successfully recorded. It does not replay when reviewing the clue or returning to the scene.
-- Flashlight: plays when the selected flashlight successfully reveals the hidden evidence. Wrong items, missing flashlight, and repeated clicks do not play this success sound.
-- Hidden evidence: plays when the player first collects the final clue.
+Local sources are on **Fish_Wrapping_Clue** and **Delivery_Receipt_Clue** in Alley_Murder, and **Search_Darkness** and **Hidden_Evidence** in Dark_Passage. The older AlexTestScene's clue sources are also assigned. Save the relevant scene or prefab after editing.
 
-Mouse clicks and finger taps use the same existing button actions, so they trigger the same sounds.
+Game_Audio creates itself when a Play session starts. Keep its name and Resources location unchanged; do not add a copy to every scene. Editing its temporary copy under DontDestroyOnLoad during Play does not save changes.
 
-## Avoid losing your assignments
+## Adding another interactive cat or button
 
-Make these changes **outside Play mode**. The Game_Audio object under DontDestroyOnLoad during Play is a temporary copy; editing that copy will not save your clips. Edit the prefab in the Project panel instead.
+- On a new character using **CaseInteraction**, enable **Play Cat Call** in the Inspector. Leave it off for objects, signs, and the deceased cat.
+- Add **UIButtonSound** to a new ordinary menu or inventory button. It handles its own click listener. Do not add it to navigation arrows or clue-pickup/character targets that already have their own sounds.
+- New EvidencePickup objects require an Audio Source. Assign a short pickup clip there and leave autoplay and looping off.
 
-If you hear nothing, check that the clip is assigned, the source's Mute checkbox is off, its Volume is above zero, and the Game view's audio mute setting and device volume allow sound.
+The code handles mouse clicks and finger taps through the same existing button events. New sounds do not change item requirements or story progression. See [ScriptsREADME.md](ScriptsREADME.md) for the code explanations.
 
-## Useful optional sounds for later
+## Verification
 
-These are suggestions, not additional systems installed in this change:
-
-- A soft click for opening the inventory or selecting menu buttons.
-- A coin jingle for selling the fish or paying the shiner.
-- A short celebration sound when the chief closes the case.
-
-## Code and verification
-
-`GameAudio.cs` owns the two shared sources. `ButtonController.cs` requests the arrow sound. `EvidencePickup.cs` uses the Audio Source on its clue. `CaseInteraction.cs` plays the connected source after successful flashlight use or hidden-evidence collection. See [ScriptsREADME.md](ScriptsREADME.md) for the function explanations.
-
-Unity Play mode verification passed **79 checks with 0 errors**, covering scene changes across all 11 build scenes, music continuity, arrow playback, clue collection/review, flashlight conditions, pause/help, and starting a new case. The checks used temporary silent clips to verify playback state; those clips were not saved to the project. Listening to your chosen clips and testing the final Android build remain to be done after you assign the audio.
+After recovering Unity's generated Library from the system crash, **74 Play mode checks passed with 0 errors** using the actual imported clips. They checked button callbacks and playback state for music continuity, menu/inventory clicks, footsteps across a scene change, living-cat calls, clue collection, successful flashlight use, the win transition, and restarting a case. These checks do not replace listening to the mix or testing physical taps on the Android tablet.

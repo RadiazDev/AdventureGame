@@ -15,6 +15,7 @@ public class CaseInteraction : MonoBehaviour
     [SerializeField, TextArea] private string hint;
     [Tooltip("Optional sound for successfully using the flashlight or collecting the hidden evidence.")]
     [SerializeField] private AudioSource successSound;
+    [SerializeField] private bool playCatCall;
 
     private void Start()
     {
@@ -27,6 +28,7 @@ public class CaseInteraction : MonoBehaviour
     public void Interact()
     {
         if (CaseProgress.CurrentStage == CaseProgress.Stage.CaseClosed) return;
+        if (playCatCall) GameAudio.PlayCat();
         switch (role)
         {
             case Role.Murder: InspectMurder(); break;
@@ -165,6 +167,7 @@ public class CaseInteraction : MonoBehaviour
             CaseProgress.SelectedItem = "";
             CaseProgress.CurrentStage = CaseProgress.Stage.CaseClosed;
             endingPanel.SetActive(true);
+            GameAudio.PlayWin();
         }
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.ReportChief)
             Say("Chief: Select Final evidence in your inventory, then tap me to present the case.");

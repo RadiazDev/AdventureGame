@@ -394,6 +394,8 @@ MonoBehaviour:
   endingPanel: {fileID: 0}
   hint: 'Street cat: Murder Alley is north. The shiner works in Dumpster Alley, just
     beyond it. The dock is south.'
+  successSound: {fileID: 0}
+  playCatCall: 1
 --- !u!114 &558618280
 MonoBehaviour:
   m_ObjectHideFlags: 0

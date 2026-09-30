@@ -4,7 +4,7 @@ Updated September 30, 2026. This guide describes the current prototype. Story de
 
 ## Start here
 
-The game has ten scripts. Each has a different job:
+The game has eleven scripts. Each has a different job:
 
 | Script | Its job |
 | --- | --- |
@@ -17,7 +17,8 @@ The game has ten scripts. Each has a different job:
 | [EvidencePickup](#7-evidencepickupcs) | Collect an alley clue and prevent collecting it again. |
 | [EvidenceReview](#8-evidencereviewcs) | Let the player reread a collected clue's description. |
 | [GameMenu](#9-gamemenucs) | Run the start screen, pause menu, and Help screen. |
-| [GameAudio](#10-gameaudiocs) | Keep the background track and arrow sounds playing across scene changes. |
+| [GameAudio](#10-gameaudiocs) | Play background, footsteps, button clicks, cat calls, and the win sound. |
+| [UIButtonSound](#11-uibuttonsoundcs) | Give menu and inventory buttons the shared click sound. |
 
 **Items** are things the player uses, such as Fish, Money, and Flashlight. **Case notes** record discoveries, such as the fish wrapping or the shiner's statement. The final discovery adds both a usable **Final evidence** item and a **Hidden evidence** case note.
 
@@ -167,6 +168,7 @@ The line containing `selected ? ... : ...` is a short way to write an if/else: i
 | Ending Panel | The ending display used by the Chief interaction. |
 | Hint | The words used when Role is Hint. |
 | Success Sound | Optional Audio Source, already connected on Search_Darkness and Hidden_Evidence. Assign a clip on that source. |
+| Play Cat Call | Enabled for living cat characters, including Street 1's street cat. Plays a random call when clicked. Leave off on objects and the deceased cat. |
 
 The Hidden Evidence and Ending Panel fields are for the roles that use them. They do not need to be filled on every character.
 
@@ -187,7 +189,7 @@ The Hidden Evidence and Ending Panel fields are for the roles that use them. The
 ### Other functions
 
 - `Start()` restores the hidden object's visibility and ending panel from the current stage when entering a scene.
-- `Interact()` chooses the role's function, then refreshes the inventory. It stops accepting these interactions once the case is closed.
+- `Interact()` plays a cat call when Play Cat Call is enabled, chooses the role's function, then refreshes the inventory. It stops accepting these interactions once the case is closed.
 - `Say(string line)` gives one line of text to the dialogue box.
 - `PlaySuccessSound()` plays the connected source's clip if one is assigned. Successful flashlight use and final-clue collection call it; wrong items and repeat interactions do not.
 - `WrongItem(string expected)` checks whether a different item is selected. It displays a response and keeps the item when it is unsuitable. With no item selected, normal conversation can proceed; a trade still requires the correct selected item.
@@ -196,7 +198,7 @@ Most roles reject unsuitable selections. If an item is still selected and the pl
 
 ### What currently ends the game
 
-The player must reach `ReportChief`, own and select `Final evidence`, and click the chief. The chief also checks that **Fish wrapping** and **Delivery receipt** were collected. If either is missing, the player can go back for it. If both are present, the stage becomes `CaseClosed` and the ending panel opens.
+The player must reach `ReportChief`, own and select `Final evidence`, and click the chief. The chief also checks that **Fish wrapping** and **Delivery receipt** were collected. If either is missing, the player can go back for it. If both are present, the stage becomes `CaseClosed` and the ending panel opens. `GameAudio.PlayWin()` stops the background and cat audio and plays Game_Win once.
 
 The actual murderer and identifying object are still story placeholders. This script currently handles the puzzle sequence, not a finished explanation of the murder.
 
@@ -317,8 +319,8 @@ These fields and button events are already connected. Edit the shared prefab to 
 - `ContinueGame()` closes the menu and restores the previous speed. It preserves the current scene, inventory, selected item, and open conversation.
 - `ShowHelp()` remembers whether Help was opened from Pause, then displays the instructions. A paused case stays paused.
 - `BackFromHelp()` returns to Pause or the title panel, depending on where Help was opened.
-- `QuitToStart()` restores the game speed and loads Start_Screen.
-- `StartGame()` clears the case and collected clues, then loads Office (Start). This starts a new case rather than resuming the old one.
+- `QuitToStart()` restores the game speed, resumes the background if the win stopped it, and loads Start_Screen.
+- `StartGame()` clears the case and collected clues, ensures the background is playing, then loads Office (Start). This starts a new case rather than resuming the old one.
 - `OnDisable()` restores the game speed if the menu is removed while paused, preventing a scene change from leaving the game frozen.
 - `BlocksDialogueInput` tells Dialogue to ignore input while paused and on the frame a menu button was clicked. `ResetMenuInput()` clears that remembered frame when a Play session starts.
 
@@ -330,7 +332,7 @@ The `helpCameFromPause` true/false variable is how Back knows where to go. Help 
 
 [Open the script](Assets/Scripts/GameAudio.cs)
 
-**Purpose:** keep one background track playing throughout the game and let an arrow sound finish after its scene changes.
+**Purpose:** manage the sounds shared across scenes and switch from background audio to the win sound when the case is solved.
 
 **Where it goes:** the root of **Assets/Resources/Game_Audio.prefab**. The game creates this prefab automatically when Play starts. You do not need to put it in each scene.
 
@@ -339,9 +341,13 @@ The `helpCameFromPause` true/false variable is how Back knows where to go. Help 
 | Field | What it means |
 | --- | --- |
 | Background Source | Already connected to the Background_Audio child. Put your background clip on that child's Audio Source. |
-| Arrow Source | Already connected to the Arrow_Audio child. Put your arrow-click clip on that child's Audio Source. |
+| Arrow Source | Connected to Arrow_Audio, using Arrow_FootSteps. |
+| Button Source | Connected to Button_Audio, using Button_Click. |
+| Cat Source | Connected to Cat_Audio. It plays the clip chosen from Cat Calls. |
+| Win Source | Connected to Win_Audio, using Game_Win. |
+| Cat Calls | The six Cat_Call clips from Assets/SOUNDS. |
 
-The background source loops and starts at volume 0.25. The arrow source does not loop and starts at 0.75. Both are 2D, and their Play On Awake settings are off because the code controls playback. Empty clip slots are safe.
+The background source loops at volume 0.25. Arrow and button sources use 0.75, cat calls use 0.65, and the win source uses 0.7. Effects do not loop. All are 2D with Play On Awake off because code controls playback. Empty clip slots are safe. The background's import setting uses Streaming for this long track.
 
 ### Functions
 
@@ -349,11 +355,31 @@ The background source loops and starts at volume 0.25. The arrow source does not
 - `CreateAudio()` loads the Game_Audio prefab from Resources and creates it before the first scene loads. The attribute above the method tells Unity to run it automatically.
 - `Awake()` removes duplicate audio objects, keeps the original alive with `DontDestroyOnLoad`, and starts the background clip if one is assigned.
 - `PlayArrow()` plays the arrow source's clip if one is assigned. `ButtonController` calls this before loading the next scene.
+- `PlayButton()` plays Button_Click through the shared source. `UIButtonSound` calls it for menu and inventory buttons, including ones that close their own panel.
+- `PlayCat()` randomly chooses one of the six cat calls. It replaces the previous call instead of stacking several voices. It does nothing while the win audio state is active.
+- `PlayWin()` stops the background and cat call, then starts Game_Win once. The private `winStarted` true/false variable prevents repeated triggering.
+- `PlayBackground()` clears the win state, stops win audio, and starts the background if it is not already playing. Existing background playback is not restarted when moving into a new case.
 - `OnDestroy()` clears the remembered instance if that object is removed.
 
-The private static `instance` field remembers the one audio object shared by the whole game. It prevents two copies of the background track. Music continues during Pause and Help and when returning to the title screen.
+The private static `instance` field remembers the one audio object shared by the whole game. It prevents two copies of the background track. Music continues through scenes, Pause, and Help, stops at the chief's Case_Closed_Panel, and stays off after the win clip finishes. Quit returns to the title and resumes the background.
 
 **Change here when:** changing shared audio behavior. To choose sounds or adjust their volume, edit the prefab's child Audio Sources instead. Keep the prefab name and Resources location unchanged. See [AudioNotes.md](AudioNotes.md) for the exact clip slots, including clue and flashlight sounds.
+
+## 11. UIButtonSound.cs
+
+[Open the script](Assets/Scripts/UIButtonSound.cs)
+
+**Purpose:** play the ordinary click sound when an available menu or inventory button is clicked or tapped.
+
+**Where it goes:** buttons in the shared Game_Menu and Evidence_UI prefabs. The older AlexTestScene's inventory controls also have it. It requires a Button component and has no Inspector fields to fill in.
+
+- `Awake()` remembers the attached Button.
+- `OnEnable()` connects the button's click to `GameAudio.PlayButton()`.
+- `OnDisable()` removes that connection so reopening a panel does not accumulate extra listeners.
+
+It uses the persistent Button_Audio source, so closing a panel or changing scenes does not cut the click off. Add this component to future ordinary UI buttons. Do not add it to arrows, cat interactions, or physical clue pickups that already trigger their own sounds.
+
+**Change here when:** changing how UI buttons request their sound. Choose the actual clip and volume on the Game_Audio prefab's Button_Audio child.
 
 ## Names that must match
 

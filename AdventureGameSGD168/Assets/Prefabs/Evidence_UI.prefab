@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 428666815}
   - component: {fileID: 428666814}
   - component: {fileID: 900000011}
+  - component: {fileID: 48066152683472828}
   m_Layer: 5
   m_Name: Inventory_Receipt_Button
   m_TagString: Untagged
@@ -413,6 +414,18 @@ MonoBehaviour:
   descriptionText: {fileID: 1469263453}
   evidenceDescription: A fish delivery was scheduled for the alley at midnight. Hmmm
     kinda late for a delivery.
+--- !u!114 &48066152683472828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428666812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &487116231
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +949,7 @@ GameObject:
   - component: {fileID: 974998582}
   - component: {fileID: 974998581}
   - component: {fileID: 974998580}
+  - component: {fileID: 4174962735811542380}
   m_Layer: 5
   m_Name: Close_Button
   m_TagString: Untagged
@@ -1057,6 +1071,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4174962735811542380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974998578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1233888803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,6 +1369,7 @@ GameObject:
   - component: {fileID: 1459796376}
   - component: {fileID: 1459796375}
   - component: {fileID: 1459796374}
+  - component: {fileID: 4442080678383194965}
   m_Layer: 5
   m_Name: Evidence_Button
   m_TagString: Untagged
@@ -1464,6 +1491,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4442080678383194965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459796372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1469263451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,6 +1654,7 @@ GameObject:
   - component: {fileID: 1639102561}
   - component: {fileID: 1639102560}
   - component: {fileID: 900000010}
+  - component: {fileID: 1764464751746492854}
   m_Layer: 5
   m_Name: Inventory_Fish_Button
   m_TagString: Untagged
@@ -1740,6 +1780,18 @@ MonoBehaviour:
   evidenceName: Fish wrapping
   descriptionText: {fileID: 1469263453}
   evidenceDescription: The wrapping carries the fish market's stamp.
+--- !u!114 &1764464751746492854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639102558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1730645416624401283
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,6 +2353,7 @@ GameObject:
   - component: {fileID: 5846375903080559344}
   - component: {fileID: 6144098836244740765}
   - component: {fileID: 8457142873990127691}
+  - component: {fileID: 8285014087319448068}
   m_Layer: 5
   m_Name: Shiner_Review
   m_TagString: Untagged
@@ -2427,6 +2480,18 @@ MonoBehaviour:
   descriptionText: {fileID: 1469263453}
   evidenceDescription: The shiner saw someone flee Murder Alley and hide something
     in the passage off Street 3.
+--- !u!114 &8285014087319448068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3205469127675225765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &3877328262676762805
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,6 +2915,7 @@ GameObject:
   - component: {fileID: 4672929274196815166}
   - component: {fileID: 1663805350414027964}
   - component: {fileID: 3072623487019499839}
+  - component: {fileID: 6832125026989857169}
   m_Layer: 5
   m_Name: Cancel_Item
   m_TagString: Untagged
@@ -2971,6 +3037,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6832125026989857169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267601465684432664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &4316565752339818914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2983,6 +3061,7 @@ GameObject:
   - component: {fileID: 4822357269971668069}
   - component: {fileID: 3927067509782296439}
   - component: {fileID: 6368946707145680900}
+  - component: {fileID: 3198445869200791964}
   m_Layer: 5
   m_Name: Item_Money
   m_TagString: Untagged
@@ -3104,6 +3183,18 @@ MonoBehaviour:
           m_StringArgument: Money
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3198445869200791964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4316565752339818914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &4357997174692144410
 GameObject:
   m_ObjectHideFlags: 0
@@ -3253,6 +3344,7 @@ GameObject:
   - component: {fileID: 3363082528238336768}
   - component: {fileID: 4701353178591415718}
   - component: {fileID: 6050452310500460756}
+  - component: {fileID: 7640711872434617747}
   m_Layer: 5
   m_Name: Item_Final_evidence
   m_TagString: Untagged
@@ -3374,6 +3466,18 @@ MonoBehaviour:
           m_StringArgument: Final evidence
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7640711872434617747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826537545313163079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &4959766474992471783
 GameObject:
   m_ObjectHideFlags: 0
@@ -3387,6 +3491,7 @@ GameObject:
   - component: {fileID: 3348199365239171979}
   - component: {fileID: 3585829501684092014}
   - component: {fileID: 9156789450538665895}
+  - component: {fileID: 4442649960828499668}
   m_Layer: 5
   m_Name: Hidden_Evidence_Review
   m_TagString: Untagged
@@ -3513,6 +3618,18 @@ MonoBehaviour:
   descriptionText: {fileID: 1469263453}
   evidenceDescription: The object found where the witness saw someone hide evidence.
     Present it with the alley clues to the chief.
+--- !u!114 &4442649960828499668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959766474992471783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &5024306268753450459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3526,6 +3643,7 @@ GameObject:
   - component: {fileID: 642158497645771155}
   - component: {fileID: 7061266583924316410}
   - component: {fileID: 8985173536308060573}
+  - component: {fileID: 6118425278682474649}
   m_Layer: 5
   m_Name: Crime_Scene_Review
   m_TagString: Untagged
@@ -3652,6 +3770,18 @@ MonoBehaviour:
   descriptionText: {fileID: 1469263453}
   evidenceDescription: The alley cat was murdered. The wrapping and receipt were
     left nearby.
+--- !u!114 &6118425278682474649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5024306268753450459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &5571582114368069788
 GameObject:
   m_ObjectHideFlags: 0
@@ -4212,6 +4342,7 @@ GameObject:
   - component: {fileID: 2778404781071287504}
   - component: {fileID: 3408522767670077561}
   - component: {fileID: 3932330106310399395}
+  - component: {fileID: 4752678191348571966}
   m_Layer: 5
   m_Name: Item_Flashlight
   m_TagString: Untagged
@@ -4333,6 +4464,18 @@ MonoBehaviour:
           m_StringArgument: Flashlight
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4752678191348571966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368382204064672374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &8444650251031699414
 GameObject:
   m_ObjectHideFlags: 0
@@ -4482,6 +4625,7 @@ GameObject:
   - component: {fileID: 3512462315711022438}
   - component: {fileID: 3468951090619939220}
   - component: {fileID: 9064693916287198269}
+  - component: {fileID: 5191606608118317563}
   m_Layer: 5
   m_Name: Item_Fish
   m_TagString: Untagged
@@ -4603,6 +4747,18 @@ MonoBehaviour:
           m_StringArgument: Fish
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5191606608118317563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597014048920209412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &8890201083806040578
 GameObject:
   m_ObjectHideFlags: 0

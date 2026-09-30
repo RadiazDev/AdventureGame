@@ -720,6 +720,7 @@ MonoBehaviour:
   endingPanel: {fileID: 0}
   hint: 
   successSound: {fileID: 877108923}
+  playCatCall: 0
 --- !u!114 &877108920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,7 +826,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 24bf0b00554ddbe479ad177ee1df4339, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.8
   m_Pitch: 1
@@ -2017,6 +2018,7 @@ MonoBehaviour:
   endingPanel: {fileID: 0}
   hint: 
   successSound: {fileID: 1521881234}
+  playCatCall: 0
 --- !u!114 &1521881231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2122,7 +2124,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 6578710402f64204cb80bdbf9380c54c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.8
   m_Pitch: 1

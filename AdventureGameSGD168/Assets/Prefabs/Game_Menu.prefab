@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 7626408595012688452}
   - component: {fileID: 4266844305071455070}
   - component: {fileID: 3581271845927383564}
+  - component: {fileID: 1937858543143294084}
   m_Layer: 5
   m_Name: Start_Game_Button
   m_TagString: Untagged
@@ -270,6 +271,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1937858543143294084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273727989141714119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &441550883156338507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,6 +1022,7 @@ GameObject:
   - component: {fileID: 6287941151624212900}
   - component: {fileID: 4720702321967800399}
   - component: {fileID: 5928954305900669306}
+  - component: {fileID: 275919065156977223}
   m_Layer: 5
   m_Name: Pause_Help_Button
   m_TagString: Untagged
@@ -1130,6 +1144,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &275919065156977223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998756384579583619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &2244021889894919336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,6 +1168,7 @@ GameObject:
   - component: {fileID: 361915019293994414}
   - component: {fileID: 3125611652817504639}
   - component: {fileID: 6562583730837566771}
+  - component: {fileID: 6101483238162926905}
   m_Layer: 5
   m_Name: Pause_Button
   m_TagString: Untagged
@@ -1263,6 +1290,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6101483238162926905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2244021889894919336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &2544461451368746131
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,6 +1526,7 @@ GameObject:
   - component: {fileID: 1435486652606443519}
   - component: {fileID: 537753852108244188}
   - component: {fileID: 5645355567126634201}
+  - component: {fileID: 7922121336483136034}
   m_Layer: 5
   m_Name: Help_Back_Button
   m_TagString: Untagged
@@ -1608,6 +1648,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7922121336483136034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2834303663861705082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &3528426257216398623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,6 +2502,7 @@ GameObject:
   - component: {fileID: 3506495330740426381}
   - component: {fileID: 2101971837372159411}
   - component: {fileID: 3076947432509494662}
+  - component: {fileID: 6980550353214502692}
   m_Layer: 5
   m_Name: Quit_Button
   m_TagString: Untagged
@@ -2571,6 +2624,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6980550353214502692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6286505288721426741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &6699309352625845815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2801,6 +2866,7 @@ GameObject:
   - component: {fileID: 2209032799594469824}
   - component: {fileID: 443247027565652639}
   - component: {fileID: 7442100568161628152}
+  - component: {fileID: 7872433805726191310}
   m_Layer: 5
   m_Name: Continue_Button
   m_TagString: Untagged
@@ -2922,6 +2988,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7872433805726191310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7153330123235325248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &7461847073593575430
 GameObject:
   m_ObjectHideFlags: 0
@@ -3759,6 +3837,7 @@ GameObject:
   - component: {fileID: 2036769256334046895}
   - component: {fileID: 7420630055126915540}
   - component: {fileID: 3558868927432909730}
+  - component: {fileID: 6559645362206477998}
   m_Layer: 5
   m_Name: Start_Help_Button
   m_TagString: Untagged
@@ -3880,3 +3959,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6559645362206477998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179129465440955467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435bdfcab00e9eb45b39dff26eddbff0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
