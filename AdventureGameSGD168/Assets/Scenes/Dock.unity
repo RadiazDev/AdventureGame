@@ -665,6 +665,8 @@ MonoBehaviour:
   hiddenEvidence: {fileID: 0}
   endingPanel: {fileID: 0}
   hint: []
+  successSound: {fileID: 0}
+  playCatCall: 0
 --- !u!114 &395354436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,6 +1005,8 @@ MonoBehaviour:
   hiddenEvidence: {fileID: 0}
   endingPanel: {fileID: 0}
   hint: []
+  successSound: {fileID: 0}
+  playCatCall: 1
 --- !u!114 &803202798
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,12 +1,17 @@
 using UnityEngine;
 
-// One copy keeps music and arrow sounds playing when a scene changes.
+// One copy keeps the shared sounds playing when a scene changes.
 public class GameAudio : MonoBehaviour
 {
     [SerializeField] private AudioSource backgroundSource;
     [SerializeField] private AudioSource arrowSource;
+    [SerializeField] private AudioSource buttonSource;
+    [SerializeField] private AudioSource catSource;
+    [SerializeField] private AudioSource winSource;
+    [SerializeField] private AudioClip[] catCalls;
 
     private static GameAudio instance;
+    private bool winStarted;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetAudio()
@@ -35,9 +40,7 @@ public class GameAudio : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // An empty clip slot is fine while the team is choosing sounds.
-        if (backgroundSource != null && backgroundSource.clip != null)
-            backgroundSource.Play();
+        PlayBackground();
     }
 
     public static void PlayArrow()
@@ -47,6 +50,46 @@ public class GameAudio : MonoBehaviour
 
         // This source survives the scene change, so the click can finish playing.
         instance.arrowSource.PlayOneShot(instance.arrowSource.clip);
+    }
+
+    public static void PlayButton()
+    {
+        if (instance == null || instance.buttonSource == null) return;
+        if (instance.buttonSource.clip != null)
+            instance.buttonSource.PlayOneShot(instance.buttonSource.clip);
+    }
+
+    public static void PlayCat()
+    {
+        if (instance == null || instance.catSource == null || instance.winStarted) return;
+        if (instance.catCalls == null || instance.catCalls.Length == 0) return;
+
+        int choice = Random.Range(0, instance.catCalls.Length);
+        instance.catSource.clip = instance.catCalls[choice];
+        if (instance.catSource.clip != null)
+            instance.catSource.Play(); // Replace the previous call instead of stacking meows.
+    }
+
+    public static void PlayWin()
+    {
+        if (instance == null || instance.winStarted) return;
+        instance.winStarted = true;
+        if (instance.backgroundSource != null) instance.backgroundSource.Stop();
+        if (instance.catSource != null) instance.catSource.Stop();
+        if (instance.winSource != null && instance.winSource.clip != null)
+            instance.winSource.Play();
+    }
+
+    public static void PlayBackground()
+    {
+        if (instance == null) return;
+        instance.winStarted = false;
+        if (instance.winSource != null) instance.winSource.Stop();
+
+        // Moving between normal scenes or starting a case does not restart the music.
+        if (instance.backgroundSource != null && instance.backgroundSource.clip != null &&
+            !instance.backgroundSource.isPlaying)
+            instance.backgroundSource.Play();
     }
 
     private void OnDestroy()

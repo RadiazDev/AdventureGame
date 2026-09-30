@@ -80,6 +80,7 @@ public class GameMenu : MonoBehaviour
 
     public void QuitToStart()
     {
+        GameAudio.PlayBackground();
         lastMenuClickFrame = Time.frameCount;
         Time.timeScale = previousTimeScale;
         isPaused = false;
@@ -88,6 +89,7 @@ public class GameMenu : MonoBehaviour
 
     public void StartGame()
     {
+        GameAudio.PlayBackground();
         lastMenuClickFrame = Time.frameCount;
         Time.timeScale = 1f;
         isPaused = false;

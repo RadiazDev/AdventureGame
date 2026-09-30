@@ -397,6 +397,8 @@ MonoBehaviour:
   - 'Street Cat: I''m scared to go to Murder Alley up north...'
   - 'Street Cat: I wonder why they call it that.'
   - 'Street Cat: Oh well.'
+  successSound: {fileID: 0}
+  playCatCall: 1
 --- !u!114 &558618280
 MonoBehaviour:
   m_ObjectHideFlags: 0

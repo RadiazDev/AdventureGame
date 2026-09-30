@@ -854,6 +854,8 @@ MonoBehaviour:
   hiddenEvidence: {fileID: 0}
   endingPanel: {fileID: 0}
   hint: []
+  successSound: {fileID: 0}
+  playCatCall: 1
 --- !u!114 &851392062
 MonoBehaviour:
   m_ObjectHideFlags: 0

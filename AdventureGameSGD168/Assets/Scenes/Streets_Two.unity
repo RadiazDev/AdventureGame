@@ -952,6 +952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaseInteraction
   role: 8
+  playCatCall: 1
   dialogue: {fileID: 1946584499}
   bag: {fileID: 900000001}
   evidence: {fileID: 900000002}
