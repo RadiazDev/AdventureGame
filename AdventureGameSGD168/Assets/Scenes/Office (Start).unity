@@ -1641,8 +1641,10 @@ MonoBehaviour:
   evidence: {fileID: 900000002}
   hiddenEvidence: {fileID: 0}
   endingPanel: {fileID: 0}
-  hint: 'Detective: The chief called about trouble in Murder Alley. Start there,
-    examine the scene, and follow the clues.'
+  hint:
+  - '- A classic murder case.'
+  - '- Murder Alley seems to have claimed yet another victim.'
+  - '- I should probably check it out.'
 --- !u!114 &1021912166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1826,7 +1828,7 @@ MonoBehaviour:
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 26
-  m_fontSizeMax: 34
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256

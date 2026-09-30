@@ -392,8 +392,11 @@ MonoBehaviour:
   evidence: {fileID: 900000002}
   hiddenEvidence: {fileID: 0}
   endingPanel: {fileID: 0}
-  hint: 'Street cat: Murder Alley is north. The shiner works in Dumpster Alley, just
-    beyond it. The dock is south.'
+  hint:
+  - 'Street Cat: Hello Detective Mercer!'
+  - 'Street Cat: I''m scared to go to Murder Alley up north...'
+  - 'Street Cat: I wonder why they call it that.'
+  - 'Street Cat: Oh well.'
 --- !u!114 &558618280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,7 +1200,7 @@ MonoBehaviour:
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 26
-  m_fontSizeMax: 34
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
