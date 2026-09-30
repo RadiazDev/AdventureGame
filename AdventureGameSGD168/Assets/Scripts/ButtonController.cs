@@ -12,6 +12,7 @@ public class ButtonController : MonoBehaviour
     public void OnArrowPress(string sceneName)
     {
         Debug.Log("Arrow Pressed to " + sceneName);
+        GameAudio.PlayArrow();
         SceneManager.LoadScene(sceneName);
     }
 
