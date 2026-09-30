@@ -1,10 +1,10 @@
 # Cat Detective: beginner's guide to every script
 
-Updated September 28, 2026. This guide describes the current prototype. Story details and features can change as the group develops the game.
+Updated September 30, 2026. This guide describes the current prototype. Story details and features can change as the group develops the game.
 
 ## Start here
 
-The game has nine scripts. Each has a different job:
+The game has ten scripts. Each has a different job:
 
 | Script | Its job |
 | --- | --- |
@@ -17,6 +17,7 @@ The game has nine scripts. Each has a different job:
 | [EvidencePickup](#7-evidencepickupcs) | Collect an alley clue and prevent collecting it again. |
 | [EvidenceReview](#8-evidencereviewcs) | Let the player reread a collected clue's description. |
 | [GameMenu](#9-gamemenucs) | Run the start screen, pause menu, and Help screen. |
+| [GameAudio](#10-gameaudiocs) | Keep the background track and arrow sounds playing across scene changes. |
 
 **Items** are things the player uses, such as Fish, Money, and Flashlight. **Case notes** record discoveries, such as the fish wrapping or the shiner's statement. The final discovery adds both a usable **Final evidence** item and a **Hidden evidence** case note.
 
@@ -39,7 +40,7 @@ Progress survives moving between scenes and using Pause/Continue. Starting a fre
 
 ### Functions
 
-- `OnArrowPress(string sceneName)` loads the scene named by the button. For example, passing `Streets_One` takes the player to Street 1. The scene name must match the actual scene and be included in the build's scene list.
+- `OnArrowPress(string sceneName)` plays the shared arrow sound, then loads the scene named by the button. For example, passing `Streets_One` takes the player to Street 1. The scene name must match the actual scene and be included in the build's scene list. An empty arrow clip slot stays silent.
 - `OnQuestionMarkPress(int dialogueBoxNumber)` enables the blocker and opens box 1, 2, or 3. The number comes from the button's On Click event.
 
 The named character buttons now use `CaseInteraction`. The old question-mark system remains in the project, with its template buttons inactive.
@@ -165,6 +166,7 @@ The line containing `selected ? ... : ...` is a short way to write an if/else: i
 | Hidden Evidence | The hidden object to reveal for the Darkness interaction. |
 | Ending Panel | The ending display used by the Chief interaction. |
 | Hint | The words used when Role is Hint. |
+| Success Sound | Optional Audio Source, already connected on Search_Darkness and Hidden_Evidence. Assign a clip on that source. |
 
 The Hidden Evidence and Ending Panel fields are for the roles that use them. They do not need to be filled on every character.
 
@@ -187,6 +189,7 @@ The Hidden Evidence and Ending Panel fields are for the roles that use them. The
 - `Start()` restores the hidden object's visibility and ending panel from the current stage when entering a scene.
 - `Interact()` chooses the role's function, then refreshes the inventory. It stops accepting these interactions once the case is closed.
 - `Say(string line)` gives one line of text to the dialogue box.
+- `PlaySuccessSound()` plays the connected source's clip if one is assigned. Successful flashlight use and final-clue collection call it; wrong items and repeat interactions do not.
 - `WrongItem(string expected)` checks whether a different item is selected. It displays a response and keeps the item when it is unsuitable. With no item selected, normal conversation can proceed; a trade still requires the correct selected item.
 
 Most roles reject unsuitable selections. If an item is still selected and the player wants to investigate normally, use **Cancel item**.
@@ -233,7 +236,7 @@ The `foreach` loop means “go through each collected clue.” It appends the cl
 
 **Purpose:** collect a clickable clue once and mark it as collected.
 
-**Where it goes:** the red **Fish_Wrapping_Clue** and **Delivery_Receipt_Clue** buttons. The script requires a Button component.
+**Where it goes:** the red **Fish_Wrapping_Clue** and **Delivery_Receipt_Clue** buttons. The script requires Button and Audio Source components. Assign a pickup clip on the object's Audio Source; an empty clip is allowed.
 
 ### Inspector fields
 
@@ -251,7 +254,8 @@ Both clues use the same script. Each component has its own Inspector values. `"F
 ### Functions
 
 - `OnEnable()` checks whether this clue is already recorded. It restores the collected label and disabled pickup button when the player returns to the scene. If an Inventory Button is assigned, it also sets that button's availability and connects `ShowDescription()` to its click.
-- `CollectEvidence()` stops if this pickup was already collected. Otherwise, it records the clue, enables an assigned review button, updates the description and label, and disables the pickup button.
+- `Awake()` remembers the attached Audio Source and sets it to 2D, with looping and autoplay off.
+- `CollectEvidence()` stops if this pickup was already collected. Otherwise, it records the clue, plays the pickup clip if assigned, enables an assigned review button, updates the description and label, and disables the pickup button. Sound plays only after recording succeeds.
 - `ShowDescription()` writes this clue's description only after collection.
 - `OnDisable()` removes the review-button click connection it added earlier.
 
@@ -321,6 +325,35 @@ These fields and button events are already connected. Edit the shared prefab to 
 The `helpCameFromPause` true/false variable is how Back knows where to go. Help is a panel in the same scene, so reading it does not unload the player's current location.
 
 **Change here when:** changing menu behavior. To edit instructions, open **Game_Menu > Help_Panel** in Prefab Mode and change its TextMeshPro text. See [MenuNotes.md](MenuNotes.md) for setup and a quick check.
+
+## 10. GameAudio.cs
+
+[Open the script](Assets/Scripts/GameAudio.cs)
+
+**Purpose:** keep one background track playing throughout the game and let an arrow sound finish after its scene changes.
+
+**Where it goes:** the root of **Assets/Resources/Game_Audio.prefab**. The game creates this prefab automatically when Play starts. You do not need to put it in each scene.
+
+### Inspector fields
+
+| Field | What it means |
+| --- | --- |
+| Background Source | Already connected to the Background_Audio child. Put your background clip on that child's Audio Source. |
+| Arrow Source | Already connected to the Arrow_Audio child. Put your arrow-click clip on that child's Audio Source. |
+
+The background source loops and starts at volume 0.25. The arrow source does not loop and starts at 0.75. Both are 2D, and their Play On Awake settings are off because the code controls playback. Empty clip slots are safe.
+
+### Functions
+
+- `ResetAudio()` clears the remembered instance at the beginning of a Play session.
+- `CreateAudio()` loads the Game_Audio prefab from Resources and creates it before the first scene loads. The attribute above the method tells Unity to run it automatically.
+- `Awake()` removes duplicate audio objects, keeps the original alive with `DontDestroyOnLoad`, and starts the background clip if one is assigned.
+- `PlayArrow()` plays the arrow source's clip if one is assigned. `ButtonController` calls this before loading the next scene.
+- `OnDestroy()` clears the remembered instance if that object is removed.
+
+The private static `instance` field remembers the one audio object shared by the whole game. It prevents two copies of the background track. Music continues during Pause and Help and when returning to the title screen.
+
+**Change here when:** changing shared audio behavior. To choose sounds or adjust their volume, edit the prefab's child Audio Sources instead. Keep the prefab name and Resources location unchanged. See [AudioNotes.md](AudioNotes.md) for the exact clip slots, including clue and flashlight sounds.
 
 ## Names that must match
 

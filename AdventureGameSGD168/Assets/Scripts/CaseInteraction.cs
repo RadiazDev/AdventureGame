@@ -13,6 +13,8 @@ public class CaseInteraction : MonoBehaviour
     [SerializeField] private GameObject hiddenEvidence;
     [SerializeField] private GameObject endingPanel;
     [SerializeField, TextArea] private string hint;
+    [Tooltip("Optional sound for successfully using the flashlight or collecting the hidden evidence.")]
+    [SerializeField] private AudioSource successSound;
 
     private void Start()
     {
@@ -43,6 +45,12 @@ public class CaseInteraction : MonoBehaviour
     private void Say(string line)
     {
         dialogue.Show(new string[] { line });
+    }
+
+    private void PlaySuccessSound()
+    {
+        if (successSound != null && successSound.clip != null)
+            successSound.PlayOneShot(successSound.clip);
     }
 
     private bool WrongItem(string expected)
@@ -177,6 +185,7 @@ public class CaseInteraction : MonoBehaviour
             CaseProgress.CurrentStage = CaseProgress.Stage.CollectEvidence;
             CaseProgress.SelectedItem = "";
             hiddenEvidence.SetActive(true);
+            PlaySuccessSound();
             Say("Detective: There! Something was hidden in the darkness. I'll collect it before heading back to the chief.");
         }
         else if (CaseProgress.HasItem("Flashlight"))
@@ -193,6 +202,7 @@ public class CaseInteraction : MonoBehaviour
             CaseProgress.AddItem("Final evidence");
             CaseProgress.CurrentStage = CaseProgress.Stage.ReportChief;
             evidence.AddEvidence("Hidden evidence");
+            PlaySuccessSound();
             Say("Detective: Evidence collected. Together with the alley clues and the shiner's statement, this belongs with the chief.");
         }
         else if (CaseProgress.CurrentStage >= CaseProgress.Stage.ReportChief)

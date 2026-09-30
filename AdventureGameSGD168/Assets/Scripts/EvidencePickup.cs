@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
+[RequireComponent(typeof(AudioSource))]
 public class EvidencePickup : MonoBehaviour
 {
     [SerializeField] private TMP_Text clueText;
@@ -18,6 +19,15 @@ public class EvidencePickup : MonoBehaviour
     [SerializeField] private Button inventoryButton;
 
     private bool collected;
+    private AudioSource pickupSound;
+
+    private void Awake()
+    {
+        pickupSound = GetComponent<AudioSource>();
+        pickupSound.playOnAwake = false;
+        pickupSound.loop = false;
+        pickupSound.spatialBlend = 0f;
+    }
 
     private void OnEnable()
     {
@@ -72,6 +82,10 @@ public class EvidencePickup : MonoBehaviour
         }
 
         collected = true;
+
+        // Only play after collection succeeds, not when reviewing an old clue.
+        if (pickupSound.clip != null)
+            pickupSound.PlayOneShot(pickupSound.clip);
 
         if (inventoryButton != null)
         {
