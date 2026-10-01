@@ -8,19 +8,24 @@ using TMPro;
 using System.Collections;
 using UnityEngine.InputSystem;
 
+// This handles the dialogue box, the typing effect, and moving through each line.
 public class Dialogue : MonoBehaviour
 {
+    // These are the text box, its conversation lines, and the delay between letters.
     public TextMeshProUGUI textComponent;
     public string[] lines;
     public float textSpeed;
+    // This tracks which line is showing. The first line is number 0.
     private int index;
+    // Remember when the box opened so that same click does not skip the first line.
     private int openedFrame;
+    // This covers the scene buttons while a conversation is open.
     [SerializeField] GameObject buttonBlocker;
 
-    // Restart whenever the box opens, including repeat conversations.
+    // Start at the first line each time this dialogue box opens.
     private void OnEnable()
     {
-        // Close safely if this box has no text field or conversation assigned.
+        // If the text box or lines are missing, close instead of trying to show them.
         if (textComponent == null || lines == null || lines.Length == 0)
         {
             gameObject.SetActive(false);
@@ -33,13 +38,14 @@ public class Dialogue : MonoBehaviour
         StartCoroutine(TypeLine());
     }
 
+    // Stop the typing and allow scene buttons again when the box closes.
     private void OnDisable()
     {
-        // Stop typing when the box closes, then allow scene buttons again.
         StopAllCoroutines();
         if (buttonBlocker != null) buttonBlocker.SetActive(false);
     }
 
+    // Replace the conversation and reopen the box so OnEnable starts it over.
     public void Show(string[] newLines)
     {
         gameObject.SetActive(false);
@@ -47,9 +53,10 @@ public class Dialogue : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    // Check for a mouse click or finger tap after the UI buttons have had their turn.
     private void LateUpdate()
     {
-        // Let UI buttons run first, then ignore menu taps and the opening tap.
+        // Ignore pause menu clicks and the click that just opened this conversation.
         if (GameMenu.BlocksDialogueInput || Time.frameCount == openedFrame)
         {
             return;
@@ -67,6 +74,7 @@ public class Dialogue : MonoBehaviour
         }
     }
 
+    // Finish the current line, move to the next line, or close after the last one.
     public void Advance()
     {
         if (!gameObject.activeInHierarchy || GameMenu.BlocksDialogueInput) return;
@@ -84,9 +92,10 @@ public class Dialogue : MonoBehaviour
         else gameObject.SetActive(false);
     }
 
+    // Show the current line one letter at a time.
     private IEnumerator TypeLine()
     {
-        // A coroutine waits between letters without stopping the rest of the game.
+        // This waits between letters without making the rest of the game wait.
         foreach (char letter in lines[index])
         {
             textComponent.text += letter;

@@ -7,10 +7,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// This collects a scene clue, plays its pickup sound, and unlocks its inventory button.
+// These attributes make sure the clue also has a Button and an AudioSource.
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(AudioSource))]
 public class EvidencePickup : MonoBehaviour
 {
+    // Each clue uses this same script with its own name, description, and references.
     [SerializeField] private TMP_Text clueText;
     [SerializeField] private EvidenceInventory inventory;
     [SerializeField] private string evidenceName = "Fish wrapping";
@@ -18,9 +21,11 @@ public class EvidencePickup : MonoBehaviour
     [SerializeField] private string evidenceDescription;
     [SerializeField] private Button inventoryButton;
 
+    // This stops the scene button from collecting the same clue again.
     private bool collected;
     private AudioSource pickupSound;
 
+    // Set up a normal 2D pickup sound that waits until the clue is clicked.
     private void Awake()
     {
         pickupSound = GetComponent<AudioSource>();
@@ -29,9 +34,10 @@ public class EvidencePickup : MonoBehaviour
         pickupSound.spatialBlend = 0f;
     }
 
+    // Check the shared evidence list and connect this clue's inventory review button.
     private void OnEnable()
     {
-        // Restore this clue when the player returns to its scene.
+        // This remembers collected clues when the player returns to their scene.
         if (inventory != null)
         {
             collected = inventory.HasEvidence(evidenceName);
@@ -54,6 +60,7 @@ public class EvidencePickup : MonoBehaviour
         }
     }
 
+    // Disconnect the review button when this clue object is disabled or its scene closes.
     private void OnDisable()
     {
         // Remove the listener so reopening this object does not add extra clicks.
@@ -63,6 +70,7 @@ public class EvidencePickup : MonoBehaviour
         }
     }
 
+    // Collect this clue once, play its sound, and update the scene and inventory buttons.
     public void CollectEvidence()
     {
         if (collected)
@@ -76,7 +84,7 @@ public class EvidencePickup : MonoBehaviour
             return;
         }
 
-        // Record the clue before marking this pickup as collected.
+        // Only mark the clue as collected after the inventory accepts it.
         if (!inventory.AddEvidence(evidenceName))
         {
             return;
@@ -93,6 +101,7 @@ public class EvidencePickup : MonoBehaviour
             inventoryButton.interactable = true;
         }
 
+        // Update the description text without opening the evidence panel.
         ShowDescription();
 
         if (clueText != null)
@@ -104,7 +113,7 @@ public class EvidencePickup : MonoBehaviour
         Debug.Log("Collected evidence: " + evidenceName);
     }
 
-    // The inventory button can review a clue without collecting it again.
+    // The inventory button uses this to review a collected clue without playing the pickup again.
     public void ShowDescription()
     {
         if (collected == false)

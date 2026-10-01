@@ -7,10 +7,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Put this on a character or object button, then choose its role in the Inspector.
+// This handles the characters and objects that move the murder case forward.
+// I choose a role in the Inspector so the same script can handle different buttons.
 public class CaseInteraction : MonoBehaviour
 {
+    // The role tells the button which conversation or action to run when clicked or tapped.
     public enum Role { Murder, Shiner, Dockworker, DeliveryCrate, FishSeller, Chief, Darkness, HiddenEvidence, Hint }
+    // These references connect each scene's buttons to its dialogue and inventory UI.
+    // Hidden evidence, the ending panel, and sound are assigned on the objects that need them.
     [SerializeField] private Role role;
     [SerializeField] private Dialogue dialogue;
     [SerializeField] private AdventureInventory bag;
@@ -22,15 +26,17 @@ public class CaseInteraction : MonoBehaviour
     [SerializeField, TextArea] private string[] hint;
     [SerializeField] private bool playCatCall;
 
+    // When we return to a scene, show the evidence or ending if we already reached that stage.
     private void Start()
     {
-        // Restore scene objects to match the player's saved case progress.
+        // This uses progress from the current play session, not a saved game on the device.
         if (hiddenEvidence != null)
             hiddenEvidence.SetActive(CaseProgress.CurrentStage >= CaseProgress.Stage.CollectEvidence);
         if (endingPanel != null)
             endingPanel.SetActive(CaseProgress.CurrentStage == CaseProgress.Stage.CaseClosed);
     }
 
+    // The button calls this. Check its role, run that interaction, then update the inventory.
     public void Interact()
     {
         if (CaseProgress.CurrentStage == CaseProgress.Stage.CaseClosed) return;
@@ -50,17 +56,22 @@ public class CaseInteraction : MonoBehaviour
         bag.Refresh();
     }
 
+    // Pass the conversation to Dialogue, which handles typing and moving through the lines.
     private void Say(string[] line)
     {
         dialogue.Show(line);
     }
 
+    // Play this object's assigned sound only after its action succeeds.
+    // That lets the flashlight and hidden evidence use different clips in the Inspector.
     private void PlaySuccessSound()
     {
         if (successSound != null && successSound.clip != null)
             successSound.PlayOneShot(successSound.clip);
     }
 
+    // Return true when the player selected the wrong item, so the caller can stop here.
+    // An empty expected name means this interaction does not need an item selected.
     private bool WrongItem(string expected)
     {
         // No selection is allowed; a different selected item stays in the bag.
@@ -69,6 +80,8 @@ public class CaseInteraction : MonoBehaviour
         return true;
     }
 
+    // Examining the murder starts the search for the shiner and adds the crime scene note.
+    // Checking it again repeats the dialogue without moving the case backward.
     private void InspectMurder()
     {
         if (WrongItem("")) return;
@@ -80,6 +93,8 @@ public class CaseInteraction : MonoBehaviour
         Say(new string[] { "- Looks like the alley cat has been murdered.", "- Fish wrapping and a delivery receipt were left nearby. The shiner in that old Dumpster Alley may have seen something." });
     }
 
+    // The shiner sends us to earn money first. Paying him unlocks his statement and the chief's help.
+    // The stage checks give the player the right conversation when they come back later.
     private void TalkShiner()
     {
         if (WrongItem("Money")) return;
@@ -95,6 +110,7 @@ public class CaseInteraction : MonoBehaviour
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.PayShiner &&
                  CaseProgress.SelectedItem == "Money" && CaseProgress.HasItem("Money"))
         {
+            // Spend the money once, then record the lead about the dark passage.
             CaseProgress.RemoveItem("Money");
             CaseProgress.CurrentStage = CaseProgress.Stage.GetFlashlight;
             evidence.AddEvidence("Shiner testimony");
@@ -106,6 +122,8 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "Shiner: Just a single dime for what I know.", "Shiner: Select Money in your inventory, then tap me to pay.", "Shiner: Whatever that means..." });
     }
 
+    // The dockworker offers the crate job after the shiner tells us we need money.
+    // Talking again either reminds us about the crate or points us toward the fish market.
     private void TalkDockworker()
     {
         if (WrongItem("")) return;
@@ -122,6 +140,8 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "Dockworker: Thanks again for finding my crate. The fish seller at the market will buy your fish." });
     }
 
+    // Finding the crate after accepting the job gives us a fish to sell.
+    // The stage changes right away so clicking again cannot give us extra fish.
     private void FindCrate()
     {
         if (WrongItem("")) return;
@@ -137,6 +157,8 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "- I already returned this crate and received my fish." });
     }
 
+    // Trade the selected fish for money, then send the player back to pay the shiner.
+    // Owning the fish is not enough; the player also has to select it in the inventory.
     private void TalkFishSeller()
     {
         if (WrongItem("Fish")) return;
@@ -154,6 +176,8 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "Fish seller: I'll buy a fresh fish from the dock. Select Fish in your inventory, then tap me to sell it.", "Fish Seller: Whatever that means..." });
     }
 
+    // The chief gives us the flashlight after the shiner's lead and checks the final evidence later.
+    // Finishing the case opens the ending panel and switches the background audio to the win sound.
     private void TalkChief()
     {
         if (WrongItem("Final evidence")) return;
@@ -166,6 +190,7 @@ public class CaseInteraction : MonoBehaviour
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.ReportChief &&
                  CaseProgress.SelectedItem == "Final evidence" && CaseProgress.HasItem("Final evidence"))
         {
+            // The hidden evidence alone is not enough. Both original alley clues must be collected too.
             if (!evidence.HasEvidence("Fish wrapping") || !evidence.HasEvidence("Delivery receipt"))
             {
                 Say(new string[] { "Chief: Bring both original alley clues too: the fish wrapping and delivery receipt. We need the complete trail." });
@@ -184,6 +209,8 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "Chief: Examine Murder Alley and get me a lead.", "Chief: That's an order!" });
     }
 
+    // Use the selected flashlight on the dark area to reveal the final evidence.
+    // Clear the selection after using it, but keep the flashlight in the inventory.
     private void SearchDarkness()
     {
         if (WrongItem("Flashlight")) return;
@@ -204,6 +231,8 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "- Too dark - even for these eyes. I'll need a flashlight.", "- Perhaps the chief can help once I have a lead." });
     }
 
+    // Once the flashlight reveals the evidence, put it in the bag and add a case note.
+    // The next step is to select this item and present it to the chief.
     private void CollectFinalEvidence()
     {
         if (WrongItem("")) return;

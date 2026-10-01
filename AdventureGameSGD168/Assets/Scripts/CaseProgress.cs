@@ -6,10 +6,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Static values keep the player's case progress when a different scene loads.
+// This keeps the case stage and usable items in memory as the player moves between scenes.
 public static class CaseProgress
 {
-    // The enum names each stage in story order. Later stages have larger values.
+    // These stages follow the story order, so a higher value means the player is farther along.
     public enum Stage
     {
         FindMurder, FindShiner, TalkDockworker, FindCrate, SellFish,
@@ -18,10 +18,11 @@ public static class CaseProgress
     }
 
     public static Stage CurrentStage = Stage.FindMurder;
+    // An empty name means the player has not selected an item to use.
     public static string SelectedItem = "";
     private static List<string> items = new List<string>();
 
-    // Unity also calls this reset when a new Play session starts in the Editor.
+    // This clears the case for a new game or a fresh Play session in the Editor.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     public static void ResetCase()
     {
@@ -30,23 +31,27 @@ public static class CaseProgress
         items.Clear();
     }
 
+    // This checks whether the player has the named item.
     public static bool HasItem(string itemName)
     {
         return items.Contains(itemName);
     }
 
+    // This adds the item only if it is not already in the inventory.
     public static void AddItem(string itemName)
     {
         if (!items.Contains(itemName)) items.Add(itemName);
     }
 
+    // This takes an item out of the inventory.
     public static void RemoveItem(string itemName)
     {
         items.Remove(itemName);
+        // Clear the selection too, so it cannot point to an item we no longer have.
         if (SelectedItem == itemName) SelectedItem = "";
     }
 
-    // Match the current stage to the objective shown in the inventory.
+    // This turns the current story stage into the objective shown in the inventory.
     public static string Objective()
     {
         switch (CurrentStage)
