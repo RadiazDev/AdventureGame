@@ -14,6 +14,7 @@ public class Dialogue : MonoBehaviour
     public string[] lines;
     public float textSpeed;
     private int index;
+    // Remember when the box opened so that same click or tap does not skip a line.
     private int openedFrame;
     [SerializeField] GameObject buttonBlocker;
 
@@ -40,6 +41,7 @@ public class Dialogue : MonoBehaviour
         if (buttonBlocker != null) buttonBlocker.SetActive(false);
     }
 
+    // Reopen the box with the lines supplied by the current case interaction.
     public void Show(string[] newLines)
     {
         gameObject.SetActive(false);
@@ -55,6 +57,7 @@ public class Dialogue : MonoBehaviour
             return;
         }
 
+        // A mouse release on the computer and a finger release on Android both advance the dialogue.
         bool clicked = Mouse.current != null &&
                        Mouse.current.leftButton.wasReleasedThisFrame;
 
@@ -69,6 +72,7 @@ public class Dialogue : MonoBehaviour
 
     public void Advance()
     {
+        // Leave the conversation where it is while the box is closed or a menu is open.
         if (!gameObject.activeInHierarchy || GameMenu.BlocksDialogueInput) return;
         if (textComponent.text != lines[index])
         {

@@ -34,7 +34,9 @@ public class CaseInteraction : MonoBehaviour
     public void Interact()
     {
         if (CaseProgress.CurrentStage == CaseProgress.Stage.CaseClosed) return;
+        // Character buttons can use the shared cat sounds when this is checked in the Inspector.
         if (playCatCall) GameAudio.PlayCat();
+        // Use the role set in the Inspector to run the right interaction for this button.
         switch (role)
         {
             case Role.Murder: InspectMurder(); break;
@@ -47,6 +49,7 @@ public class CaseInteraction : MonoBehaviour
             case Role.HiddenEvidence: CollectFinalEvidence(); break;
             case Role.Hint: Say(hint); break;
         }
+        // Update the inventory buttons after this interaction adds, uses, or removes an item.
         bag.Refresh();
     }
 
@@ -55,6 +58,7 @@ public class CaseInteraction : MonoBehaviour
         dialogue.Show(line);
     }
 
+    // Play the clip assigned to this object for a successful flashlight use or evidence pickup.
     private void PlaySuccessSound()
     {
         if (successSound != null && successSound.clip != null)
@@ -74,6 +78,7 @@ public class CaseInteraction : MonoBehaviour
         if (WrongItem("")) return;
         if (CaseProgress.CurrentStage == CaseProgress.Stage.FindMurder)
         {
+            // Record the crime scene once, then move the objective to finding the shiner.
             CaseProgress.CurrentStage = CaseProgress.Stage.FindShiner;
             evidence.AddEvidence("Crime scene examined");
         }
@@ -95,6 +100,7 @@ public class CaseInteraction : MonoBehaviour
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.PayShiner &&
                  CaseProgress.SelectedItem == "Money" && CaseProgress.HasItem("Money"))
         {
+            // Spend the selected money and unlock the flashlight step after paying the shiner.
             CaseProgress.RemoveItem("Money");
             CaseProgress.CurrentStage = CaseProgress.Stage.GetFlashlight;
             evidence.AddEvidence("Shiner testimony");
@@ -113,6 +119,7 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "Dockworker: Ask around the alleys first. Come back if you need work." });
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.TalkDockworker)
         {
+            // Talking to the dockworker starts the crate job.
             CaseProgress.CurrentStage = CaseProgress.Stage.FindCrate;
             Say(new string[] { "Dockworker: Find my misplaced delivery crate and I'll pay you with a fresh fish. Look for the brown crate here on the dock.", "Dockworker: I'm colorblind so I don't see no good." });
         }
@@ -129,6 +136,7 @@ public class CaseInteraction : MonoBehaviour
             Say(new string[] { "- A misplaced delivery crate. I should speak with the dockworker before moving it." });
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.FindCrate)
         {
+            // Give the fish reward, then move on so this crate cannot pay out again.
             CaseProgress.AddItem("Fish");
             CaseProgress.CurrentStage = CaseProgress.Stage.SellFish;
             Say(new string[] { "Dockworker: That's my delivery crate!", "Dockworker: Wow it really was just nearby huh.", "Dockworker: Welp, here's your fish.", "Dockworker: Open your inventory, select Fish, then offer it to the fish seller.", "Dockworker: Whatever that means..." });
@@ -143,6 +151,7 @@ public class CaseInteraction : MonoBehaviour
         if (CaseProgress.CurrentStage == CaseProgress.Stage.SellFish &&
             CaseProgress.SelectedItem == "Fish" && CaseProgress.HasItem("Fish"))
         {
+            // Trade the selected fish for money that can be used to pay the shiner.
             CaseProgress.RemoveItem("Fish");
             CaseProgress.AddItem("Money");
             CaseProgress.CurrentStage = CaseProgress.Stage.PayShiner;
@@ -159,6 +168,7 @@ public class CaseInteraction : MonoBehaviour
         if (WrongItem("Final evidence")) return;
         if (CaseProgress.CurrentStage == CaseProgress.Stage.GetFlashlight)
         {
+            // Add the flashlight to the bag and unlock the dark passage search.
             CaseProgress.AddItem("Flashlight");
             CaseProgress.CurrentStage = CaseProgress.Stage.SearchPassage;
             Say(new string[] { "Chief: The shiner saw something hidden off 3rd street? Take this flashlight.", "Chief: Select it in your inventory and use it on the dark area. Bring any evidence back to me." });
@@ -166,14 +176,17 @@ public class CaseInteraction : MonoBehaviour
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.ReportChief &&
                  CaseProgress.SelectedItem == "Final evidence" && CaseProgress.HasItem("Final evidence"))
         {
+            // The final evidence is not enough by itself; both alley clues are needed too.
             if (!evidence.HasEvidence("Fish wrapping") || !evidence.HasEvidence("Delivery receipt"))
             {
                 Say(new string[] { "Chief: Bring both original alley clues too: the fish wrapping and delivery receipt. We need the complete trail." });
                 return;
             }
+            // Clear the item selection and show the ending once the complete case is handed in.
             CaseProgress.SelectedItem = "";
             CaseProgress.CurrentStage = CaseProgress.Stage.CaseClosed;
             endingPanel.SetActive(true);
+            // Switch from the background sound to the win audio when the case is solved.
             GameAudio.PlayWin();
         }
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.ReportChief)
@@ -192,6 +205,7 @@ public class CaseInteraction : MonoBehaviour
         else if (CaseProgress.CurrentStage == CaseProgress.Stage.SearchPassage &&
                  CaseProgress.SelectedItem == "Flashlight" && CaseProgress.HasItem("Flashlight"))
         {
+            // Reveal the clue and play the flashlight sound only after the selected flashlight is used.
             CaseProgress.CurrentStage = CaseProgress.Stage.CollectEvidence;
             CaseProgress.SelectedItem = "";
             hiddenEvidence.SetActive(true);
@@ -209,6 +223,7 @@ public class CaseInteraction : MonoBehaviour
         if (WrongItem("")) return;
         if (CaseProgress.CurrentStage == CaseProgress.Stage.CollectEvidence)
         {
+            // Keep the evidence in the bag for the chief and record it in the evidence list.
             CaseProgress.AddItem("Final evidence");
             CaseProgress.CurrentStage = CaseProgress.Stage.ReportChief;
             evidence.AddEvidence("Hidden evidence");

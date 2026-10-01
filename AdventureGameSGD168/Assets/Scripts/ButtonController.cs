@@ -17,6 +17,7 @@ public class ButtonController : MonoBehaviour
     public void OnArrowPress(string sceneName)
     {
         Debug.Log("Arrow Pressed to " + sceneName);
+        // Start the footsteps here. The shared audio object keeps them playing through the scene change.
         GameAudio.PlayArrow();
         SceneManager.LoadScene(sceneName);
     }
