@@ -1,7 +1,7 @@
-//Group 1
-//Ryan Diaz & Alex Freeman
-//SGD 168
-//Prof. Ven Lewis
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
 
 using TMPro;
 using UnityEngine;
@@ -31,6 +31,7 @@ public class EvidenceReview : MonoBehaviour
 
     private void OnDisable()
     {
+        // Pair this with OnEnable to avoid adding the same listener twice.
         GetComponent<Button>().onClick.RemoveListener(ShowDescription);
     }
 

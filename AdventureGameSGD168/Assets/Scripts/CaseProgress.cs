@@ -1,11 +1,15 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using System.Collections.Generic;
 using UnityEngine;
 
-// These values stay with the player when a different scene loads.
-//static class to track the player's progress in the case.
+// Static values keep the player's case progress when a different scene loads.
 public static class CaseProgress
 {
-    //Enum is a list of all the stages in the case. Use this to track the player's progress.
+    // The enum names each stage in story order. Later stages have larger values.
     public enum Stage
     {
         FindMurder, FindShiner, TalkDockworker, FindCrate, SellFish,
@@ -17,6 +21,7 @@ public static class CaseProgress
     public static string SelectedItem = "";
     private static List<string> items = new List<string>();
 
+    // Unity also calls this reset when a new Play session starts in the Editor.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     public static void ResetCase()
     {
@@ -40,9 +45,8 @@ public static class CaseProgress
         items.Remove(itemName);
         if (SelectedItem == itemName) SelectedItem = "";
     }
-    //Returns the current objective based on the player's progress in the case.
-    //(case stage.) This method returns a string describing the player's current objective based on the stage they are in.
-    // So when the player is at a certain stage, this method will provide the corresponding objective.
+
+    // Match the current stage to the objective shown in the inventory.
     public static string Objective()
     {
         switch (CurrentStage)
@@ -58,7 +62,6 @@ public static class CaseProgress
             case Stage.CollectEvidence: return "Collect the evidence revealed by the flashlight.";
             case Stage.ReportChief: return "Select the final evidence and present it to the chief.";
             default: return "Case closed. Purr-petrator caught!";
-            //Dont reorder the entries in the switch statement. Each case corresponds to a specific stage in the case.
         }
     }
 }

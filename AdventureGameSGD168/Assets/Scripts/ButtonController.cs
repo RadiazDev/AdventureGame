@@ -1,3 +1,8 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +25,7 @@ public class ButtonController : MonoBehaviour
     {
         Debug.Log("Question Mark Pressed");
 
+        // Keep the scene buttons covered while a dialogue box is open.
         buttonBlocker.SetActive(true);
 
         switch (dialogueBoxNumber)
@@ -33,7 +39,6 @@ public class ButtonController : MonoBehaviour
             case 3:
                 dialogueBox3.SetActive(true);
                 break;
-
         }
     }
 }

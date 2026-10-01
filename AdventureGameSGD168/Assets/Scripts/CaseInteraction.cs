@@ -1,3 +1,8 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +24,7 @@ public class CaseInteraction : MonoBehaviour
 
     private void Start()
     {
+        // Restore scene objects to match the player's saved case progress.
         if (hiddenEvidence != null)
             hiddenEvidence.SetActive(CaseProgress.CurrentStage >= CaseProgress.Stage.CollectEvidence);
         if (endingPanel != null)
@@ -57,6 +63,7 @@ public class CaseInteraction : MonoBehaviour
 
     private bool WrongItem(string expected)
     {
+        // No selection is allowed; a different selected item stays in the bag.
         if (CaseProgress.SelectedItem == "" || CaseProgress.SelectedItem == expected) return false;
         Say(new string[] { "- That won't help here. I'll keep it and try something else." });
         return true;
@@ -206,7 +213,6 @@ public class CaseInteraction : MonoBehaviour
             CaseProgress.CurrentStage = CaseProgress.Stage.ReportChief;
             evidence.AddEvidence("Hidden evidence");
             PlaySuccessSound();
-
 
             Say(new string[] { "- The murder weapon!", "- Together with the alley clues and the shiner's statement, this belongs with the chief." });
         }

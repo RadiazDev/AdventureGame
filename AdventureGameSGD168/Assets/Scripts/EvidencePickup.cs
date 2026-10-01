@@ -1,7 +1,7 @@
-//Group 1
-//Ryan Diaz & Alex Freeman
-//SGD 168
-//Prof. Ven Lewis
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
 
 using TMPro;
 using UnityEngine;
@@ -56,6 +56,7 @@ public class EvidencePickup : MonoBehaviour
 
     private void OnDisable()
     {
+        // Remove the listener so reopening this object does not add extra clicks.
         if (inventoryButton != null)
         {
             inventoryButton.onClick.RemoveListener(ShowDescription);

@@ -1,3 +1,8 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using UnityEngine;
 
 // One copy keeps the shared sounds playing when a scene changes.
@@ -13,6 +18,7 @@ public class GameAudio : MonoBehaviour
     private static GameAudio instance;
     private bool winStarted;
 
+    // Clear the shared reference when Unity starts a new Play session.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetAudio()
     {
@@ -31,6 +37,7 @@ public class GameAudio : MonoBehaviour
 
     private void Awake()
     {
+        // Keep one shared audio object and remove any duplicate from another scene.
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -38,6 +45,7 @@ public class GameAudio : MonoBehaviour
         }
 
         instance = this;
+        // Normally Unity destroys scene objects when the next scene loads.
         DontDestroyOnLoad(gameObject);
 
         PlayBackground();

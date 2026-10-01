@@ -1,3 +1,8 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +28,7 @@ public class GameMenu : MonoBehaviour
         get { return Time.timeScale == 0f || Time.frameCount == lastMenuClickFrame; }
     }
 
+    // A new Play session should not remember a menu click from the last session.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetMenuInput()
     {
@@ -43,6 +49,7 @@ public class GameMenu : MonoBehaviour
 
         lastMenuClickFrame = Time.frameCount;
         previousTimeScale = Time.timeScale;
+        // Zero pauses game time, including the dialogue's wait between letters.
         Time.timeScale = 0f;
         isPaused = true;
         pauseButton.SetActive(false);

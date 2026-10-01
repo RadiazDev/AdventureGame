@@ -1,3 +1,8 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -15,6 +20,7 @@ public class Dialogue : MonoBehaviour
     // Restart whenever the box opens, including repeat conversations.
     private void OnEnable()
     {
+        // Close safely if this box has no text field or conversation assigned.
         if (textComponent == null || lines == null || lines.Length == 0)
         {
             gameObject.SetActive(false);
@@ -29,6 +35,7 @@ public class Dialogue : MonoBehaviour
 
     private void OnDisable()
     {
+        // Stop typing when the box closes, then allow scene buttons again.
         StopAllCoroutines();
         if (buttonBlocker != null) buttonBlocker.SetActive(false);
     }
@@ -40,25 +47,26 @@ public class Dialogue : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-   private void LateUpdate()
-{
-    // Let UI buttons run first, then ignore menu taps and the tap that opened dialogue.
-    if (GameMenu.BlocksDialogueInput || Time.frameCount == openedFrame)
+    private void LateUpdate()
     {
-        return;
+        // Let UI buttons run first, then ignore menu taps and the opening tap.
+        if (GameMenu.BlocksDialogueInput || Time.frameCount == openedFrame)
+        {
+            return;
+        }
+
+        bool clicked = Mouse.current != null &&
+                       Mouse.current.leftButton.wasReleasedThisFrame;
+
+        bool tapped = Touchscreen.current != null &&
+                      Touchscreen.current.primaryTouch.press.wasReleasedThisFrame;
+
+        if (clicked || tapped)
+        {
+            Advance();
+        }
     }
 
-    bool clicked = Mouse.current != null &&
-                   Mouse.current.leftButton.wasReleasedThisFrame;
-
-    bool tapped = Touchscreen.current != null &&
-                  Touchscreen.current.primaryTouch.press.wasReleasedThisFrame;
-
-    if (clicked || tapped)
-    {
-        Advance();
-    }
-}
     public void Advance()
     {
         if (!gameObject.activeInHierarchy || GameMenu.BlocksDialogueInput) return;
@@ -78,6 +86,7 @@ public class Dialogue : MonoBehaviour
 
     private IEnumerator TypeLine()
     {
+        // A coroutine waits between letters without stopping the rest of the game.
         foreach (char letter in lines[index])
         {
             textComponent.text += letter;

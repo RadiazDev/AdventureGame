@@ -15,6 +15,8 @@ There is no save file or Continue option on the title screen. Use Pause's **Cont
 
 ## Editing the words or layout
 
+The title screen was updated September 30, 2026 with **A Fishy Alibi**, **Created by Ryan Diaz and Alex Freeman**, and the cat-detective alley background. In `Game_Menu.prefab`, expand **Start_Panel** to edit **Title** or **Tagline**. Its Image uses `Assets/Sprites/Title_Screen_BG.png`. **Start_Footer** is disabled so the old mouse/touch hint does not appear. Start Game and Help keep their existing actions and button sounds.
+
 Open `Assets/Prefabs/Game_Menu.prefab` in Prefab Mode. Expand **Help_Panel**, then select **Objective**, **Controls**, or **Inventory_Help** and edit the TextMeshPro text. Temporarily enable Help_Panel to preview it, then turn it off before saving. The shared prefab updates all game scenes.
 
 The simple menu controller is `Assets/Scripts/GameMenu.cs`. Its button events and Inspector references are already connected. It uses the existing UI input setup for mouse clicks and finger taps. No extra input package is needed.

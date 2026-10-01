@@ -1,3 +1,8 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +19,7 @@ public class UIButtonSound : MonoBehaviour
 
     private void OnEnable()
     {
+        // Subscribe while the button is active, then unsubscribe when it closes.
         button.onClick.AddListener(GameAudio.PlayButton);
     }
 

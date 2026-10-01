@@ -1,8 +1,11 @@
+// Ryan Diaz & Alex Freeman
+// SGD-168
+// Professor Lewis
+// September 30th 2026
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
-//added this
 
 // The item buttons select what the player will use on their next target.
 public class AdventureInventory : MonoBehaviour
@@ -45,6 +48,7 @@ public class AdventureInventory : MonoBehaviour
 
     public void Refresh()
     {
+        // Show owned items and the current selection each time the bag changes.
         fishButton.gameObject.SetActive(CaseProgress.HasItem("Fish"));
         moneyButton.gameObject.SetActive(CaseProgress.HasItem("Money"));
         flashlightButton.gameObject.SetActive(CaseProgress.HasItem("Flashlight"));
